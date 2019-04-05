@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace coreBookStore.Migrations
 {
-    public partial class ini : Migration
+    public partial class _1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -48,7 +48,8 @@ namespace coreBookStore.Migrations
                     LastName = table.Column<string>(nullable: true),
                     UserName = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
+                    OldPassword = table.Column<string>(nullable: true),
+                    NewPassword = table.Column<string>(nullable: true),
                     Country = table.Column<string>(nullable: true),
                     Address = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: true),

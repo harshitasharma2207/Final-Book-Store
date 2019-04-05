@@ -108,7 +108,9 @@ namespace coreBookStore.Migrations
 
                     b.Property<string>("LastName");
 
-                    b.Property<string>("Password");
+                    b.Property<string>("NewPassword");
+
+                    b.Property<string>("OldPassword");
 
                     b.Property<bool>("PaymentType");
 

@@ -1,36 +1,36 @@
-﻿
-@model OnlineBookStoreUser.Models.Customers
-@using Microsoft.AspNetCore.Http;
+﻿@model OnlineBookStoreUser.Models.Customers
 @{
+    ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
+
 }
 
 
+  
     <!-- breadcrumbs -->
     <div class="breadcrumbs">
         <div class="container">
-            <ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
-                <li><a href="index.html"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
+            <ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s" >
+                <li><a asp-controller="Home" asp-action="Index"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
                 <li class="active">Login Page</li>
             </ol>
         </div>
     </div>
     <!-- //breadcrumbs -->
     <!-- login -->
+    <p>@ViewBag.Error</p>
     <div class="login">
         <div class="container">
             <h3 class="animated wow zoomIn" data-wow-delay=".5s">Login Form</h3>
-
+           
             <div class="login-form-grids animated wow slideInUp" data-wow-delay=".5s">
-                <form class="form-signin" method="post" align="center" asp-controller="Customers" asp-action="login">
-                    <label asp-for="UserName"><b style="color:burlywood;">User Name</b></label>
-                    <input type="text" asp-for="UserName" class="form-control" placeholder="Enter User Name">
-                    <label asp-for="Password"><b style="color:burlywood;">Password</b></label>
-                    <input type="password" asp-for="Password" class="form-control" placeholder="Enter Password">
-
+                <form asp-controller="Customers" asp-action="login">
+                    <input type="text" asp-for="UserName" placeholder="Username" required=" ">
+                    <input type="password" asp-for="NewPassword" placeholder="Password" required=" ">
+                    <div class="forgot">
+                        <a href="#">Forgot Password?</a>
+                    </div>
                     <input type="submit" value="Login">
-
-
                 </form>
             </div>
             <h4 class="animated wow slideInUp" data-wow-delay=".5s">For New People</h4>
@@ -39,5 +39,3 @@
     </div>
     <!-- //login -->
 
-
-  

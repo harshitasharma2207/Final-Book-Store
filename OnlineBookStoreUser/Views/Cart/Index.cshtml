@@ -99,7 +99,7 @@
                     <li>Total <i>-</i> <span>@ViewBag.total</span></li>
 
                 </ul>
-                <a asp-controller="Customers" asp-action="Login" class="btn btn-sm btn-outline-secondary">Checkout</a>
+                <a asp-controller="Cart" asp-action="CheckOut" asp-route-id="@Model.BookId" class="btn btn-sm btn-outline-secondary">Checkout</a>
 
             </div>
             <div class="checkout-right-basket animated wow slideInRight" data-wow-delay=".5s">

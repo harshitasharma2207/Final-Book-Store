@@ -10,8 +10,8 @@ using coreBookStore.Models;
 namespace coreBookStore.Migrations
 {
     [DbContext(typeof(BookStoreDbContext))]
-    [Migration("20190404034905_ini123")]
-    partial class ini123
+    [Migration("20190405165103_1")]
+    partial class _1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -110,7 +110,9 @@ namespace coreBookStore.Migrations
 
                     b.Property<string>("LastName");
 
-                    b.Property<string>("Password");
+                    b.Property<string>("NewPassword");
+
+                    b.Property<string>("OldPassword");
 
                     b.Property<bool>("PaymentType");
 

@@ -27,23 +27,23 @@ namespace OnlineBookStoreUser.Controllers
             context.Customers.Add(cust);
             context.SaveChanges();
 
-            return RedirectToAction("Login", "Customers");
+            return RedirectToAction("Login");
         }
+
+        [Route("login")]
         public IActionResult Login()
         {
             return View();
         }
-
+        [Route("login")]
         [HttpPost]
-
-        public ActionResult Login(Customers cust)
-
+        public ActionResult Login(int id, Customers cust)
         {
             ViewBag.bookcategoryAuthor = context.Books.Include(c => c.Author).ToList();
             ViewBag.bookcategoryPublication = context.Books.Include(p => p.Publication).ToList();
             ViewBag.bookcategoryBook = context.Books.Include(b => b.BookCategory).ToList();
 
-            var user = context.Customers.Where(x => x.UserName == cust.UserName && x.Password.Equals(cust.Password)).SingleOrDefault();
+            var user = context.Customers.Where(x => x.UserName == cust.UserName && x.NewPassword.Equals(cust.NewPassword)).SingleOrDefault();
             if (user == null)
             {
                 ViewBag.Error = "Invalid Credential";
@@ -52,13 +52,26 @@ namespace OnlineBookStoreUser.Controllers
             else
             {
                 int custId = user.CustomerId;
+                ViewBag.custName = cust.UserName;
                 //var obj = context.Customers.Where(a => a.UserName.Equals(cust.UserName) && a.Password.Equals(cust.Password)).FirstOrDefault();
                 if (user != null)
                 {
+
                     HttpContext.Session.SetString("uname", cust.UserName);
-                    //return RedirectToAction("Details", "Customers", new { @id = custId });
-                    //return RedirectToAction("CheckOut", "Index", new { @id = custId });
-                    return RedirectToAction("Index", "Home", new { @id = custId });
+                    HttpContext.Session.SetString("cid", custId.ToString());
+                    if (ViewBag.cart != null)
+                    {
+
+                        return RedirectToAction("Profile", "Customers", new { @id = custId });
+
+                    }
+                    else
+                    {
+                       
+                        return RedirectToAction("CheckOut", "Cart", new { @id = custId });
+                    }
+
+
                 }
                 else
                 {
@@ -68,7 +81,7 @@ namespace OnlineBookStoreUser.Controllers
 
             }
 
-            
+
 
         }
         public ActionResult Details(int id)
@@ -82,17 +95,87 @@ namespace OnlineBookStoreUser.Controllers
         public ActionResult Logout()
         {
             HttpContext.Session.Remove("uname");
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
 
+        [Route("profile")]
         public ActionResult Profile(int id)
         {
+
             Customers cust = context.Customers.Where(x => x.CustomerId == id).SingleOrDefault();
-            //Books bk = context.Books.Where(x => x.BookId == id).SingleOrDefault();
-            context.SaveChanges();
             return View(cust);
 
-            
         }
+        [Route("edit")]
+        [HttpGet]
+        public ActionResult Edit()
+        {
+            int custId = int.Parse(HttpContext.Session.GetString("cid"));
+            Customers cust = context.Customers.Where(x => x.CustomerId == custId).SingleOrDefault();
+            return View(cust);
+        }
+        [Route("edit")]
+        [HttpPost]
+        public ActionResult Edit(int id, Customers a1)
+        {
+            int custId = int.Parse(HttpContext.Session.GetString("cid"));
+            Customers cust = context.Customers.Where
+                (x => x.CustomerId == custId).SingleOrDefault();
+            context.Entry(cust).CurrentValues.SetValues(a1);
+            context.SaveChanges();
+            return RedirectToAction("Profile", new { @id = custId });
+        }
+
+        [Route("resetpassword")]
+        [HttpGet]
+        public ActionResult ResetPassword()
+        {
+            int custId = int.Parse(HttpContext.Session.GetString("cid"));
+            Customers cust = context.Customers.Where(x => x.CustomerId == custId).SingleOrDefault();
+            return View(cust);
+        }
+        [Route("resetpassword")]
+        [HttpPost]
+        public ActionResult ResetPassword(int id, Customers a1)
+        {
+            int custId = int.Parse(HttpContext.Session.GetString("cid"));
+            Customers cust = context.Customers.Where
+                (x => x.CustomerId == custId).SingleOrDefault();
+            cust.NewPassword = a1.NewPassword;
+            context.SaveChanges();
+            return RedirectToAction("Profile", new { @id = custId });
+        }
+
+        [Route("resetaddress")]
+        [HttpGet]
+        public ActionResult ResetAddress()
+        {
+            int custId = int.Parse(HttpContext.Session.GetString("cid"));
+            Customers cust = context.Customers.Where(x => x.CustomerId == custId).SingleOrDefault();
+            return View(cust);
+        }
+        [Route("resetpassword")]
+        [HttpPost]
+        public ActionResult ResetAddress(int id, Customers a1)
+        {
+            int custId = int.Parse(HttpContext.Session.GetString("cid"));
+            Customers cust = context.Customers.Where
+                (x => x.CustomerId == custId).SingleOrDefault();
+            cust.Address = a1.Address;
+            context.SaveChanges();
+            return RedirectToAction("Profile", new { @id = custId });
+        }
+
+
+
+        public ActionResult Repository(int id)
+        {
+
+            ViewBag.ob = context.OrderBooks.Where(x => x.OrderId == id).ToList();
+            return View();
+
+        }
+
     }
+
 }
